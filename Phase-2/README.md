@@ -55,11 +55,3 @@ JOIN payment p ON t.Ticket_id = p.Ticket_id;
 
 ## 📌 Contribution
 Feel free to contribute to this project. Fork it, modify it, and create a pull request!
-
-## 📄 License
-This project is licensed under the MIT License.
-
----
-
-**👤 Developed by Sanket Sable** 🚀
-
