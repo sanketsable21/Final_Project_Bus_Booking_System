@@ -100,13 +100,3 @@ We welcome contributions! 🏆
 2. Create a new branch 🌿
 3. Make changes & commit 🔄
 4. Open a pull request ✅
-
-## 📄 License
-This project is licensed under the MIT License. 📜
-
-## 📬 Contact
-For any queries, reach out at: 📧 your-email@example.com
-
-**Happy Coding! 🎉**
-
->>>>>>> 62030b3e38dd75d19b9b92a396d9705d5200c821:Phase-1/README.md
