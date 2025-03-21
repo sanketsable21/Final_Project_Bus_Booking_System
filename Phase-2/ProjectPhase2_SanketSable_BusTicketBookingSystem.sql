@@ -141,3 +141,67 @@ INSERT INTO payment VALUES
 (8, 8, 600.00, '2024-10-25', 'Cash'),
 (9, 9, 850.00, '2024-11-18', 'Debit Card'),
 (10, 10, 2000.00, '2024-12-05', 'UPI');
+
+
+-- -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Queries------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Adding a new column to the user table
+ALTER TABLE user ADD COLUMN Age INT;
+
+-- Deleting the bus table
+DROP TABLE bus;
+
+-- Updating a bus status
+UPDATE bus SET Status = 'Under Maintenance' WHERE Bus_id = 3;
+
+-- Deleting a specific ticket
+DELETE FROM ticket WHERE Ticket_id = 5;
+
+-- Data Query Language (DQL) Queries
+-- Fetching all users from Mumbai
+SELECT * FROM user WHERE City = 'Mumbai';
+
+-- Fetching user details with ticket information using JOIN
+SELECT u.First_name, u.Last_name, t.Ticket_id, b.Bus_number, r.Start_point, r.End_point
+FROM user u
+JOIN ticket t ON u.User_id = t.User_id
+JOIN bus b ON t.Bus_id = b.Bus_id
+JOIN route r ON t.Route_id = r.Route_id;
+
+-- Using Aggregation Function
+-- Count total number of tickets booked
+SELECT COUNT(*) AS Total_Tickets FROM ticket;
+
+-- Using Alias
+SELECT First_name AS FName, Last_name AS LName FROM user;
+
+-- Using Operators & Clauses
+-- Fetching buses with capacity greater than 50 seats
+SELECT * FROM bus WHERE CAST(SUBSTRING_INDEX(Capacity, ' ', 1) AS UNSIGNED) > 50;
+
+-- Fetching payments made via UPI or Credit Card
+SELECT * FROM payment WHERE Payment_method IN ('UPI', 'Credit Card');
+
+-- Using BETWEEN Clause
+SELECT * FROM payment WHERE Amount BETWEEN 500 AND 1500;
+
+-- Using Subqueries
+-- Fetch users who have booked at least one ticket
+SELECT * FROM user WHERE User_id IN (SELECT DISTINCT User_id FROM ticket);
+
+-- Fetching buses that are part of any route
+SELECT * FROM bus WHERE Bus_id IN (SELECT DISTINCT Bus_id FROM route);
+
+-- Using Joins Across 5 Tables
+-- Fetching all ticket details with user, bus, route, and payment information
+SELECT u.First_name, u.Last_name, b.Bus_number, r.Start_point, r.End_point, t.Seat_no, p.Amount, p.Payment_method
+FROM ticket t
+JOIN user u ON t.User_id = u.User_id
+JOIN bus b ON t.Bus_id = b.Bus_id
+JOIN route r ON t.Route_id = r.Route_id
+JOIN payment p ON t.Ticket_id = p.Ticket_id;
+
+-- Cascading Updates & Deletes
+-- If a user is deleted, their tickets and payments are also deleted due to CASCADE
+DELETE FROM user WHERE User_id = 2;
