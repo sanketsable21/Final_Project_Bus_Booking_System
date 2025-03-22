@@ -206,6 +206,140 @@ JOIN payment p ON t.Ticket_id = p.Ticket_id;
 -- If a user is deleted, their tickets and payments are also deleted due to CASCADE
 DELETE FROM user WHERE User_id = 2;
 
+
+-- DML Queries-------------------------------------------------------------------------------------------------------------------------
+-- Update mobile number  
+UPDATE user SET Mobile = '9123456789' WHERE User_id = 1;  
+
+-- Update bus departure time  
+UPDATE bus SET Departure_time = '07:00:00' WHERE Bus_id = 101;  
+
+-- Update mobile number  
+UPDATE user SET Mobile = '9123456789' WHERE User_id = 1;  
+
+-- Update bus departure time  
+UPDATE bus SET Departure_time = '07:00:00' WHERE Bus_id = 101;  
+
+-- DQL Queries-------------------------------------------------------------------------------------------------------------------------
+-- Retrieve All Users  
+SELECT * FROM user;  
+
+-- Get User Details by ID  
+SELECT First_name, Last_name, User_email, Mobile FROM user WHERE User_id = 1;  
+
+-- Get All Bookings  
+SELECT * FROM booking;  
+
+-- Get Bookings for a Specific User  
+SELECT * FROM booking WHERE User_id = 1;  
+
+-- Find Buses Between Two Cities  
+SELECT * FROM bus WHERE Source = 'Mumbai' AND Destination = 'Pune';  
+
+-- Get All Payments with Status ‘Completed’  
+SELECT * FROM payment WHERE Payment_status = 'Completed';  
+
+-- Count Total Users Registered  
+SELECT COUNT(*) AS Total_Users FROM user;  
+
+-- Find Average Rating of a Bus  
+SELECT Bus_id, AVG(Rating) AS Avg_Rating FROM feedback WHERE Bus_id = 101 GROUP BY Bus_id;  
+
+-- Get the Latest Booking Details  
+SELECT * FROM booking ORDER BY Booking_date DESC LIMIT 1;  
+
+-- Find Users Who Gave a 5-Star Rating  
+SELECT u.First_name, u.Last_name, f.Rating  
+FROM user u  
+JOIN feedback f ON u.User_id = f.User_id  
+WHERE f.Rating = 5;  
+
+
+--  Operators, Clauses, and Functions------------------------------------------------------------------------------------------------
+-- Find Users Registered in 2024 (LIKE - Operator)  
+SELECT * FROM user WHERE Registration_date LIKE '2024%';  
+
+-- Get Bookings Between March 1-31, 2024 (BETWEEN - Operator)  
+SELECT * FROM booking WHERE Booking_date BETWEEN '2024-03-01' AND '2024-03-31';  
+
+-- Find Buses with More Than 30 Seats (> - Comparison Operator)  
+SELECT * FROM bus WHERE Total_seats > 30;  
+
+-- Find Users from Specific Cities (IN - Operator)  
+SELECT * FROM user WHERE City IN ('Dombivli', 'Kalyan', 'Airoli');  
+
+-- Get Bookings for User ID 1 OR User ID 2 (OR - Logical Operator)  
+SELECT * FROM booking WHERE User_id = 1 OR User_id = 2;  
+
+-- Get Payments for Completed Status (AND - Logical Operator)  
+SELECT * FROM payment WHERE Amount > 200 AND Payment_status = 'Completed';  
+
+-- Sort Users by Registration Date (ORDER BY - Clause)  
+SELECT * FROM user ORDER BY Registration_date DESC;  
+
+-- Count Total Users Registered (COUNT - Aggregate Function)  
+SELECT COUNT(*) AS Total_Users FROM user;  
+
+-- Find Users Who Haven’t Booked Yet (LEFT JOIN + NULL Check)  
+SELECT u.User_id, u.First_name FROM user u  
+LEFT JOIN booking b ON u.User_id = b.User_id  
+WHERE b.Booking_id IS NULL;  
+
+-- Get Users Who Spent More Than Average (HAVING + SUM + AVG)  
+SELECT User_id, SUM(Amount) AS Total_Spent  
+FROM payment GROUP BY User_id  
+HAVING SUM(Amount) > (SELECT AVG(Amount) FROM payment);  
+
+
+-- JOINS & SUBQUERIES------------------------------------------------------------------------------------------------
+-- Get Users with Their Bookings (INNER JOIN)  
+SELECT u.User_id, u.First_name, b.Booking_id, b.Bus_id  
+FROM user u INNER JOIN booking b ON u.User_id = b.User_id;  
+
+-- Get Users Who Haven’t Booked Yet (LEFT JOIN + NULL Check)  
+SELECT u.User_id, u.First_name  
+FROM user u LEFT JOIN booking b ON u.User_id = b.User_id  
+WHERE b.Booking_id IS NULL;  
+
+-- Get All Bus Details Along with Bookings (RIGHT JOIN)  
+SELECT b.Bus_id, b.Bus_name, bk.Booking_id  
+FROM bus b RIGHT JOIN booking bk ON b.Bus_id = bk.Bus_id;  
+
+-- Get Payments for Users (JOIN Multiple Tables)  
+SELECT u.First_name, u.Last_name, p.Payment_id, p.Amount  
+FROM user u  
+JOIN booking b ON u.User_id = b.User_id  
+JOIN payment p ON b.Booking_id = p.Booking_id;  
+
+-- Find Buses That Have Not Been Booked (SUBQUERY with NOT IN)  
+SELECT * FROM bus WHERE Bus_id NOT IN (SELECT Bus_id FROM booking);  
+
+-- Find Users Who Made Payments Above Average (HAVING + SUBQUERY)  
+SELECT User_id, SUM(Amount) AS Total_Spent  
+FROM payment GROUP BY User_id  
+HAVING SUM(Amount) > (SELECT AVG(Amount) FROM payment);  
+
+-- Find the Latest Booking for Each User (SUBQUERY with MAX)  
+SELECT * FROM booking  
+WHERE Booking_date = (SELECT MAX(Booking_date) FROM booking);  
+
+-- Get Users Who Paid More Than ₹1000 (EXISTS - Subquery)  
+SELECT u.User_id, u.First_name  
+FROM user u WHERE EXISTS  
+(SELECT 1 FROM payment p WHERE p.User_id = u.User_id AND p.Amount > 1000);  
+
+-- Find Bus Names with Bookings Using ALIAS (JOIN + Alias)  
+SELECT b.Bus_name AS Bus, bk.Booking_id AS Ticket  
+FROM bus b JOIN booking bk ON b.Bus_id = bk.Bus_id;  
+
+-- Get Total Revenue per Bus (JOIN + SUM)  
+SELECT b.Bus_name, SUM(p.Amount) AS Total_Revenue  
+FROM bus b  
+JOIN booking bk ON b.Bus_id = bk.Bus_id  
+JOIN payment p ON bk.Booking_id = p.Booking_id  
+GROUP BY b.Bus_name;  
+
+
 -- 10 JOIN Queries
 
 -- 1. Retrieve user details along with their booked tickets
