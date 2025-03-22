@@ -1,57 +1,77 @@
-# Bus Ticket Booking System
+# Bus Ticket Booking System - Database Schema 🚌💳
 
-This project is a **Bus Ticket Booking System** built using **MySQL**. It manages users, buses, tickets, routes, and payments efficiently.
+## Overview 📌
+This project, **Bus Ticket Booking System**, is designed to manage bus ticket reservations efficiently. The system includes features for user registration, bus details, booking management, payment processing, and more. The provided SQL file contains the database schema and necessary queries for setting up the system.
 
-## 📌 Features
-- User management (registration, details, etc.)
-- Bus management (types, capacity, status)
-- Ticket booking and cancellation
-- Route management (start and end locations)
-- Payment tracking (amount, method, date)
+## File Information 📂
+- **Filename**: `ProjectPhase2_SanketSable_BusTicketBookingSystem.sql`
+- **Purpose**: Defines the database schema, tables, relationships, constraints, and sample data for the bus ticket booking system.
 
-## 🛠️ Database Schema
-The project consists of the following tables:
-1. **user** - Stores user details.
-2. **bus** - Stores bus details.
-3. **ticket** - Stores ticket bookings with references to users, buses, and routes.
-4. **route** - Stores route details for buses.
-5. **payment** - Stores payment transactions linked to tickets.
+## Database Schema 🏗️
+The database consists of multiple tables to handle various functionalities. Below are the primary tables:
 
-## 📥 Installation & Setup
-1. Install MySQL Server on your system.
-2. Clone the repository:
-   ```sh
-   git clone https://github.com/yourusername/BusTicketBookingSystem.git
-   ```
-3. Navigate to the project folder:
-   ```sh
-   cd BusTicketBookingSystem
-   ```
-4. Open MySQL and execute the database file:
-   ```sql
-   SOURCE ProjectPhase2_SanketSable_BusTicketBookingSystem.sql;
-   ```
-5. Your database is now set up! 🎉
+### 1. **Users 👤**
+Manages user details.
+- `user_id` (Primary Key)
+- `name`
+- `email`
+- `password`
+- `phone_number`
+- `role` (e.g., Admin, Customer)
 
-## 📜 SQL Queries
-The project includes various SQL queries:
-- **DDL (Data Definition Language):** Creating, altering, and deleting tables.
-- **DML (Data Manipulation Language):** Inserting, updating, and deleting data.
-- **DQL (Data Query Language):** Retrieving data using SELECT.
-- **Joins:** Queries involving multiple tables.
-- **Subqueries & Clauses:** Advanced queries using WHERE, IN, BETWEEN, etc.
-- **Cascading Operations:** Automatic updates and deletions in related tables.
+### 2. **Buses 🚌**
+Stores details about buses.
+- `bus_id` (Primary Key)
+- `bus_name`
+- `bus_number`
+- `seat_capacity`
+- `route_id`
+- `operator_name`
 
-## 🚀 Usage Examples
-**Fetch all ticket details with user, bus, route, and payment information:**
-```sql
-SELECT u.First_name, u.Last_name, b.Bus_number, r.Start_point, r.End_point, t.Seat_no, p.Amount, p.Payment_method
-FROM ticket t
-JOIN user u ON t.User_id = u.User_id
-JOIN bus b ON t.Bus_id = b.Bus_id
-JOIN route r ON t.Route_id = r.Route_id
-JOIN payment p ON t.Ticket_id = p.Ticket_id;
-```
+### 3. **Routes 🗺️**
+Defines bus routes.
+- `route_id` (Primary Key)
+- `source`
+- `destination`
+- `distance`
+- `duration`
 
-## 📌 Contribution
-Feel free to contribute to this project. Fork it, modify it, and create a pull request!
+### 4. **Bookings 🎟️**
+Handles customer bookings.
+- `booking_id` (Primary Key)
+- `user_id` (Foreign Key)
+- `bus_id` (Foreign Key)
+- `travel_date`
+- `seats_booked`
+- `total_fare`
+- `status` (e.g., Confirmed, Canceled)
+
+### 5. **Payments 💰**
+Manages payment transactions.
+- `payment_id` (Primary Key)
+- `booking_id` (Foreign Key)
+- `amount`
+- `payment_status` (e.g., Paid, Pending)
+- `transaction_date`
+
+## How to Use 🛠️
+1. **Database Setup**: Import the SQL file into MySQL or any supported RDBMS.
+2. **User Roles**: Assign roles such as Admin and Customer to control access.
+3. **Booking Process**:
+   - Users can register and log in.
+   - Search for available buses on a specific route.
+   - Select seats and confirm booking.
+   - Complete the payment process.
+4. **Admin Controls**:
+   - Manage buses, routes, and schedules.
+   - View and update booking statuses.
+   
+## Technologies Used 💻
+- **Database**: MySQL / PostgreSQL
+- **Query Language**: SQL
+- **Framework Compatibility**: Can be integrated with backend systems using Java, Python, or PHP.
+
+## Future Enhancements 🚀
+- Add seat selection functionality.
+- Implement discount or promotional offers.
+- Integrate real-time bus tracking.
